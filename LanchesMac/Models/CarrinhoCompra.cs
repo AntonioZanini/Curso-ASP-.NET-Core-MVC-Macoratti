@@ -1,5 +1,6 @@
 ﻿using LanchesMac.Context;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -82,12 +83,16 @@ namespace LanchesMac.Models
 
         public List<CarrinhoCompraItem> GetCarrinhoCompraItens()
         {
-            return CarrinhoCompraItens ?? (CarrinhoCompraItens = context.CarrinhoCompraItens.Where(c => c.CarrinhoCompraId).Include(s => s.Lanche).ToList());
+            return CarrinhoCompraItens ?? 
+                (CarrinhoCompraItens = context.CarrinhoCompraItens
+                    .Where(c => c.CarrinhoCompraId == CarrinhoCompraId)
+                    .Include(s => s.Lanche)
+                    .ToList());
         }
 
         public void LimparCarrinho()
         {
-            var carrinhoItens = context.CarrinhoCompraItens.Where(c => c.CarrinhoCompraId = CarrinhoCompraId);
+            var carrinhoItens = context.CarrinhoCompraItens.Where(c => c.CarrinhoCompraId == CarrinhoCompraId);
 
             context.CarrinhoCompraItens.RemoveRange(carrinhoItens);
             context.SaveChanges();
@@ -96,7 +101,7 @@ namespace LanchesMac.Models
         public decimal GetCarrinhoCompraTotal()
         {
             var total = context.CarrinhoCompraItens
-                .Where(c => c.CarrinhoCompraId = CarrinhoCompraId)
+                .Where(c => c.CarrinhoCompraId == CarrinhoCompraId)
                 .Select(c => c.Lanche.Preco * c.Quantidade).Sum();
 
             return total;
