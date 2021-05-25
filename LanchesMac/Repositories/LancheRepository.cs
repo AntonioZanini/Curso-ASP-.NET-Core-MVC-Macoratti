@@ -11,7 +11,7 @@ namespace LanchesMac.Repositories
         private readonly AppDBContext context;
 
         public IEnumerable<Lanche> Lanches => context.Lanches.Include(l => l.Categoria);
-        public IEnumerable<Lanche> LanchesPrefericos => context.Lanches.Where(l => l.IsLanchePreferido).Include(l => l.Categoria);
+        public IEnumerable<Lanche> LanchesPreferidos => context.Lanches.Where(l => l.IsLanchePreferido).Include(l => l.Categoria);
 
         public LancheRepository(AppDBContext appDBContext)
         {

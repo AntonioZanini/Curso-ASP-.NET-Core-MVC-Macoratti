@@ -32,7 +32,7 @@ namespace LanchesMac.Models
             return new CarrinhoCompra(services.GetService<AppDBContext>()) { CarrinhoCompraId = carrinhoId };
         }
 
-        public void AdicionarAoCarrinho(Lanche lanche, int quantidade)
+        public void AdicionarAoCarrinho(Lanche lanche)
         {
             CarrinhoCompraItem carrinhoCompraItem = context.CarrinhoCompraItens
                 .FirstOrDefault(c => c.Lanche.LancheId == lanche.LancheId &&
@@ -44,7 +44,7 @@ namespace LanchesMac.Models
                 {
                     CarrinhoCompraId = CarrinhoCompraId,
                     Lanche = lanche,
-                    Quantidade = quantidade
+                    Quantidade = 1
                 };
                 context.CarrinhoCompraItens.Add(carrinhoCompraItem);
             }
